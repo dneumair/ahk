@@ -18,12 +18,6 @@ LShift & RShift::
     }
 return
 
-AppsKey & w::Send ^+{Left}{Del}
-AppsKey & e::Send ^+{Right}{Del}
-AppsKey & u::Send +{Home}{Del}
-
-AppsKey & f::BackSpace
-AppsKey & d::Del
 Capslock & f::BackSpace
 Capslock & d::Del
 
@@ -120,8 +114,8 @@ NumpadDel::Send {,}
 Capslock & m::Esc
 
 ;;;;; COPY PASTE ;;;;;
-CapsLock & c::^Ins
-CapsLock & v::+Ins
+CapsLock & c::CopyClipboard()
+CapsLock & v::InsertClipboard()
 
 Capslock & +::~
 
@@ -149,10 +143,27 @@ return
 RShift & Capslock::Send ^{b}
 LShift & Capslock::Send ^{b}
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 DeleteWord() {
 	if WinActive("ahk_exe alacritty.exe") {
 		Send ^w
 	} else {
 		Send, ^+{left}{delete}
 	}
+}
+
+CopyClipboard() {
+    if WinActive("ahk_exe alacritty.exe"){
+        Send +^c
+    } else {
+        Send, ^Ins
+    }
+}
+InsertClipboard() {
+    if WinActive("ahk_exe alacritty.exe"){
+        Send +^v
+    } else {
+        Send, +Ins
+    }
 }
