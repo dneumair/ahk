@@ -196,6 +196,9 @@ GetActiveWindows(){
         if (maxi_state == -1) {
             continue
         }
+        if (isInMonitor(win_id) == -1) {
+            continue
+        }
 
         active_list.Push(win_id)
         }
@@ -214,20 +217,23 @@ IndexOf(array, object) {
 
 
 Cycle(offset) {
-    active_windows := GetActiveWindows()
+    active_windows := bubblesort(GetActiveWindows())
     WinGet, current_id,, A
-    Sort active_windows, F SortByX
+    
     count := active_windows.Count()
-    idx := IndexOf(active_windows, current_id) + offset - 1
-    while (Mod(idx, count) < 0) {
-        idx := idx + count
-    }
-    idx := idx + 1
+    idx := IndexOf(active_windows, current_id) + offset -1 
+    idx := Mod(Idx + count, count) + 1
     new_id := active_windows[idx]
-    ToolTip %idx% %new_id% %current_id%
     WinActivate ahk_id %new_id%
+    WinGetPos, x,y,w,h, ahk_id %new_id%
+    WinGetClass, class, A
+    CoordMode, ToolTip, Client 
+    ToolTip %idx%: %class%, 0,0
+    SetTimer ,RemoveToolTip, 1000
 }
-
+RemoveToolTip:
+ToolTip
+return
 
 bubblesort(array) {
     itemCount := array.Count()
@@ -246,8 +252,13 @@ bubblesort(array) {
                 array[A_Index] := b_id
                 array[A_Index + 1] := a_id
                 hasChanged := True
-            }
-            MsgBox %A_Index% a:%a_x% b:%b_x%
+            } else if ( a_x == b_x ) {
+                if (a_id > b_id) {
+                    array[A_Index] := b_id
+                    array[A_Index + 1] := a_id
+                    hasChanged := True
+                }
+           }
         }
         if (!hasChanged) {
             break
@@ -259,30 +270,38 @@ bubblesort(array) {
 
 
 printArray() {
-    CoordMode, ToolTip, Screen
+    CoordMode, ToolTip, Client
     active_windows := GetActiveWindows()
     sorted := bubblesort(active_windows)
     for i, w in sorted {
         WinGetPos, x,y, width, height, ahk_id %w%
         WinGetTitle, title, ahk_id %w%
         WinGetClass, class, ahk_id %w%
-        ToolTip, %title% `n %class% `n x:%x% y:%y% w:%width% h:%height%, x, y
-        sleep 1000
+        WinGet, style, Style, ahk_id %w%
+        monitor := isInMonitor(w)
+        ToolTip, %title% `n %class% `n x:%x% y:%y% w:%width% h:%height% `n %style% `n monitor:%monitor%, x, y
+        sleep 2000
     }
 }
 
 
 isInMonitor(win_id) {
+    WinGetPos, x, y, w,h, ahk_id %win_id%
     SysGet, monitor_count, MonitorCount
-
-
+    Loop, %monitor_count% {
+        SysGet area_, Monitor, %A_Index%
+        if (x >= area_Left -20 && x <= area_Right + 20 && y >= area_Top -20 && y <= area_Bottom + 20) {
+            return A_Index
+        } 
+    }
+    return -1
 }
 
 +^F12::Reload
 +^F11::printArray()
 +^F10::
-    SysGet, Mon2, Monitor, 2
-    MsgBox, Left: %Mon2Left% -- Top: %Mon2Top% -- Right: %Mon2Right% -- Bottom %Mon2Bottom%.
-    return
+    sorted := bubblesort(GetActiveWindows())
+    isInMonitor(sorted[1])
 
 +#h::Cycle(-1)
++#l::Cycle(1)
