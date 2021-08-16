@@ -4,6 +4,10 @@ SendMode Input ; Recommended for new scripts due to its superior speed and relia
 
 SetCapsLockState AlwaysOff
 caps := false
+global class_ignore_list := []
+global class_ignore_file := ".classignore"
+importIgnoreList()
+
 
 Capslock::return
 
@@ -140,6 +144,7 @@ return
 ;;;;; tmux ;;;;
 RShift & Capslock::Send ^{b}
 LShift & Capslock::Send ^{b}
+CapsLock & a::Send ^{b}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -182,6 +187,41 @@ isVisible(win_id) {
 }
 
 
+
+isIgnored(win_class) {
+    global class_ignore_list
+    for i, ignored in class_ignore_list {
+        if (ignored == win_class) {
+            return True
+        }
+    }
+    return False
+}
+
+clearIgnored(){
+    global class_ignore_list
+    class_ignore_list := []
+}
+
+addCurrentWinClassToIgnore() {
+    global class_ignore_file
+    global class_ignore_list
+    WinGetClass cls,A
+    FileAppend, %cls%`n, %class_ignore_file%
+}
+
+importIgnoreList(){
+    global class_ignore_file
+    global class_ignore_list
+    Loop {
+        FileReadLine, line, %class_ignore_file%, %A_Index%
+        if ErrorLevel
+            break
+        class_ignore_list.Push(line)
+    }
+}
+
+
 GetActiveWindows(){
     DetectHiddenWindows, off
     WinGet, window_list, List
@@ -190,14 +230,15 @@ GetActiveWindows(){
         win_id := window_list%A_Index%
         WinGet, maxi_state, MinMax, ahk_id %win_id%
         WinGetClass, cls, ahk_id %win_id%
-        if ( cls == "Shell_TrayWnd" || cls == "Progman" || cls == "WorkerW" || cls == "tooltips_class32" || cls == "SysShadow") {
-            continue
-        }
+        WinGetTitle, title, ahk_id %win_id%
         if (maxi_state == -1) {
             continue
         }
         if (isInMonitor(win_id) == -1) {
             continue
+        }
+        if (isIgnored(cls)) {
+            Continue
         }
 
         active_list.Push(win_id)
@@ -305,3 +346,8 @@ isInMonitor(win_id) {
 
 +#h::Cycle(-1)
 +#l::Cycle(1)
++#q::
+    addCurrentWinClassToIgnore()
+    Reload
+
++#w::clearIgnored()
