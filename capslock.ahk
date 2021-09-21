@@ -64,6 +64,26 @@ Capslock & k::
         Send {Up}
 Return
 
+
+CapsLock & 2::
+    SendInput, "
+Return
+
+;;;;;;;;;;; emails ;;;;;;;;;;;;;;;;;;;;;
+CapsLock & F5::
+    if GetKeyState("LAlt")
+        Send, david.neumair@outlook.com
+Return
+
+CapsLock & F6::
+    if GetKeyState("LAlt")
+        Send, david.neumair@gmail.com
+Return
+CapsLock & F7::
+    if GetKeyState("LAlt")
+        Send, david.neumair@aerq.com
+Return
+
 ;;;;;;;;;;;; Brackets ;;;;;;;;;;;;;;;;;;;
 Capslock & i::
     If GetKeyState("LAlt")
@@ -150,9 +170,9 @@ CapsLock & a::Send ^{b}
 
 DeleteWord() {
 	if WinActive("ahk_exe alacritty.exe") {
-		Send ^w
+		Send, ^w
 	} else {
-		Send, ^+{left}{delete}
+		Send, ^{BackSpace}
 	}
 }
 
