@@ -28,13 +28,14 @@ Capslock & d::Del
 Capslock & -::/
 Capslock & #::\
 
+CapsLock & ß::?
+CapsLock & 0::=
+
 Capslock & w::DeleteWord()
 Capslock & b::Send ^{Left}
 
-Capslock & 0::End
 Capslock & 7::Home
-Capslock & 8::PgDn
-Capslock & 9::PgUp
+Capslock & 8::End
 
 Capslock & h::
     If GetKeyState("LAlt")
