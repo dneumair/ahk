@@ -200,7 +200,7 @@ CapsLock & w::Send ^{b}
 
 
 ;;;;; COPY PASTE ;;;;;
-CapsLock & c::CopyClipboard()
+CapsLock & Ins::CopyClipboard()
 CapsLock & v::InsertClipboard()
 
 
