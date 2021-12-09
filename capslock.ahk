@@ -188,19 +188,21 @@ CapsLock & r::
         Send {Tab}
 Return
 
+;;;;; tmux ;;;;
+CapsLock & w::Send ^{b}
+
+
+
+
 
 ^#l::Send ^#{Right}
 ^#h::Send ^#{Left}
 
 
+;;;;; COPY PASTE ;;;;;
+CapsLock & c::CopyClipboard()
+CapsLock & v::InsertClipboard()
 
-DeleteWord() {
-	if WinActive("ahk_exe alacritty.exe") {
-		Send ^w
-	} else {
-		Send, ^+{left}{delete}
-	}
-}
 
 CopyClipboard() {
     if WinActive("ahk_exe alacritty.exe"){
@@ -209,6 +211,7 @@ CopyClipboard() {
         Send, ^{Ins}
     }
 }
+
 InsertClipboard() {
     if WinActive("ahk_exe alacritty.exe"){
         Send +^v
