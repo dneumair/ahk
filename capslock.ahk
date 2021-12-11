@@ -155,9 +155,9 @@ Return
 
 CapsLock & ä::
     If GetKeyState("LAlt")
-        Send {&}
-    else	
         Send {=}
+    else	
+        Send {&}
 Return
 
 CapsLock & #::
