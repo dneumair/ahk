@@ -39,31 +39,31 @@ return
 
 CapsLock & u::
     If GetKeyState("LAlt")
-        Send {{}
+        Send {<}
     else	
-        Send {(}
+        Send {{}
 Return
 
 CapsLock & i::
     If GetKeyState("LAlt")
-        Send {}}
+        Send {[}
     else	
-        Send {)}
+        Send {(}
 Return
 
 
 CapsLock & o::
     If GetKeyState("LAlt")
-        Send {<}
+        Send {]}
     else	
-        Send {[}
+        Send {)}
 Return
 
 CapsLock & p::
     If GetKeyState("LAlt")
         Send {>}
     else	
-        Send {]}
+        Send {}}
 Return
 
 
