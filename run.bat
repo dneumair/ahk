@@ -1,3 +1,3 @@
 git pull -f
-start capslock.exe
-start unicomp.exe
+start /d %~dp0 capslock.exe
+start /d %~dp0 unicomp.exe
