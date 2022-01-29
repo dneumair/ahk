@@ -188,6 +188,10 @@ CapsLock & r::
         Send {Tab}
 Return
 
+CapsLock & 3::
+    Send {'}
+return
+
 ;;;;; tmux ;;;;
 CapsLock & w::Send ^{b}
 
