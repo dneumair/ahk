@@ -37,6 +37,13 @@ return
     +´::Send {U+60}
 #If
 
+CapsLock & ^::
+    If GetKeyState("LAlt")
+        Send {~}
+    else	
+        Send {~}
+Return
+
 CapsLock & u::
     If GetKeyState("LAlt")
         Send {<}
