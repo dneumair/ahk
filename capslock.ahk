@@ -31,6 +31,7 @@ CapsLock & Pause::
  	TrayTip, , deadkeys is %deadkeys%, 2
 return
 
+
 #If NOT deadkeys
     ^::Send {ASC 94}
     ´::Send {U+b4}
@@ -148,30 +149,40 @@ Return
 
 CapsLock & 2::
     If GetKeyState("LAlt")
-        Send {'}
-    else	
         Send {"}
+    else	
+        Send {'}
 Return
 
 CapsLock & ö::
     If GetKeyState("LAlt")
-        Send {End}{;}
+        Send {;}
     else	
-        Send {End}
+        Send {:}
 Return
+
 
 CapsLock & ä::
     If GetKeyState("LAlt")
+        Send {"}
+    else	
+        Send {'}
+Return
+
+CapsLock & ü::
+    If GetKeyState("LAlt")
         Send {=}
     else	
-        Send {&}
+        Send {=}
 Return
+
+
 
 CapsLock & #::
     If GetKeyState("LAlt")
         Send {\}
     else	
-        Send {$}
+        Send {\}
 Return
 
 CapsLock & ,::
